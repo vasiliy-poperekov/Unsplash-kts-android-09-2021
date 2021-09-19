@@ -5,4 +5,6 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">login</string>
+    <string name="enter_correct_email">Enter correct email</string>
+    <string name="need_more_than_8_symbols">Need more than 8 symbols</string>
 </resources>

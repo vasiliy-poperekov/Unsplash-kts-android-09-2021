@@ -51,15 +51,19 @@ class LoginFragment : Fragment() {
             SavedStateViewModelFactory(requireActivity().application, this)
         ).get(SavedStateLoginViewModel::class.java)
 
+        setButtonClickListener()
+
         binding?.etEmail?.addTextChangedListener {
             val emailString = binding?.etEmail?.text?.toString()!!
             emailFlag = checkEmail(emailString)
+            if (emailFlag) binding?.tilEmail?.isErrorEnabled = false
             setButtonClickListener()
         }
 
         binding?.etPassword?.addTextChangedListener {
             val passwordString = binding?.etPassword?.text?.toString()!!
             passwordFlag = passwordString.length >= 8
+            if (passwordFlag) binding?.tilPassword?.isErrorEnabled = false
             setButtonClickListener()
         }
     }
@@ -75,15 +79,11 @@ class LoginFragment : Fragment() {
             binding?.bvLogin?.setBackgroundResource(R.color.grey_button_color)
             binding?.bvLogin?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             binding?.bvLogin?.setOnClickListener {
-                if (emailFlag) {
-                    binding?.tilEmail?.isErrorEnabled = false
-                } else {
-                    binding?.tilEmail?.error = "Enter correct email"
+                if (!emailFlag) {
+                    binding?.tilEmail?.error = getString(R.string.enter_correct_email)
                 }
-                if (passwordFlag) {
-                    binding?.tilPassword?.isErrorEnabled = false
-                } else {
-                    binding?.tilPassword?.error = "Need more than 8 symbols"
+                if (!passwordFlag) {
+                    binding?.tilPassword?.error = getString(R.string.need_more_than_8_symbols)
                 }
             }
         }
