@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">kts-android-09-2021</string>
-    <string name="next">Next</string>
+    <string name="login_button_next">Next</string>
     <string name="welcome_to_our_app">Welcome to our app</string>
-    <string name="email">Email</string>
+    <string name="login_email">Email</string>
     <string name="password">Password</string>
     <string name="login">login</string>
-    <string name="enter_correct_email">Enter correct email</string>
-    <string name="need_more_than_8_symbols">Need more than 8 symbols</string>
+    <string name="login_enter_correct_email">Enter correct email</string>
+    <string name="login_need_more_than_8_symbols">Need more than 8 symbols</string>
 </resources>
