@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
         android:background="@color/transparent_color"
-        android:text="@string/next"
+        android:text="@string/login_button_next"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textStyle="bold"
