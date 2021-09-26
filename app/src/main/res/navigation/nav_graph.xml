@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.example.kts_android_09_2021.fragments.OnBoardingFragment"
+        android:name="com.example.kts_android_09_2021.fragments.on_boarding_fragments.on_boarding_fragment.OnBoardingFragment"
         android:label="OnBoardingFragment"
         tools:layout="@layout/fragment_on_boarding">
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.kts_android_09_2021.fragments.MainFragment"
+        android:name="com.example.kts_android_09_2021.fragments.main_fragment.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main"/>
 </navigation>

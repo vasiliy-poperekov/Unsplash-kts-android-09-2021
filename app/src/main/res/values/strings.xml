@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">kts-android-09-2021</string>
-    <string name="next">Next</string>
+    <string name="on_boarding_next">Next</string>
     <string name="welcome_to_our_app">Welcome to our app</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="login">login</string>
-    <string name="enter_correct_email">Enter correct email</string>
-    <string name="need_more_than_8_symbols">Need more than 8 symbols</string>
+    <string name="login_email_placeholder">Email</string>
+    <string name="login_password_placeholder">Password</string>
+    <string name="login_button_login">log in</string>
+    <string name="login_enter_correct_email">Enter correct email</string>
+    <string name="login_need_more_than_8_symbols">Need more than 8 symbols</string>
+    <string name="first_on_boarding_screen_title">Beautiful, free photos</string>
+    <string name="first_on_boarding_screen_subtitle">Discover over 400,000 free high-res photos that you can save and use for anything.</string>
+    <string name="second_on_boarding_screen_title">Press button to download</string>
+    <string name="second_on_boarding_screen_subtitle">Once you find photo you like, click on the bottom to save it to Photos.</string>
+    <string name="third_on_boarding_screen_title">Make Something Awesome</string>
+    <string name="third_on_boarding_screen_subtitle">Embellish your term paper, nail your next presentation, unleash your creativity remixing photos, find the perfect image for your next blog post.</string>
 </resources>
