@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">kts–android-09-2021</string>
-    <string name="next">Следующий</string>
+    <string name="login_button_next">Далее</string>
     <string name="welcome_to_our_app">Добро пожаловать в наше приложение</string>
+    <string name="login_email_placeholder">Адрес электронной почты</string>
+    <string name="login_password_placeholder">Пароль</string>
+    <string name="login_button_login">Войти</string>
+    <string name="login_enter_correct_email">Введите корректный адрес электронной почты</string>
+    <string name="login_need_more_than_8_symbols">Пароль должен быть больше 8 символов</string>
 </resources>

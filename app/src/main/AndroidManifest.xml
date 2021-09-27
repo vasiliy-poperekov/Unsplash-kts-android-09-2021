@@ -3,6 +3,7 @@
     package="com.example.kts_android_09_2021">
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
