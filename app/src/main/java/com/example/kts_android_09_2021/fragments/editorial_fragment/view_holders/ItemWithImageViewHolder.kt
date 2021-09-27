@@ -7,8 +7,10 @@ import com.example.kts_android_09_2021.fragments.editorial_fragment.items.ItemWi
 class ItemWithImageViewHolder(
     private val binding: ItemEditorialTestWithImageBinding
 ) : RecyclerView.ViewHolder(binding.root) {
+    private val authorString = "Author: "
+
     fun bind(item: ItemWithImage) {
         binding.tvTitle.text = item.title
-        binding.tvAuthor.text = binding.tvAuthor.text.toString().plus(item.author)
+        binding.tvAuthor.text = authorString.plus(item.author)
     }
 }

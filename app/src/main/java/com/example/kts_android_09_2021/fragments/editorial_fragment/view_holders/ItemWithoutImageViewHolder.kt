@@ -7,9 +7,11 @@ import com.example.kts_android_09_2021.fragments.editorial_fragment.items.ItemWi
 class ItemWithoutImageViewHolder(
     private val binding: ItemEditorialTestWithoutImageBinding
 ) : RecyclerView.ViewHolder(binding.root) {
+    private val authorString = "Author: "
+
     fun bind(item: ItemWithoutImage) {
         binding.tvWithoutTitle.text = item.title
-        binding.tvWithoutAuthor.text = binding.tvWithoutAuthor.text.toString().plus(item.author)
+        binding.tvWithoutAuthor.text = authorString.plus(item.author)
         binding.tvWithoutLikeCounter.text = item.likeCounter.toString()
         binding.ivWithoutLikeButton.setOnClickListener {
             item.likeCounter++
