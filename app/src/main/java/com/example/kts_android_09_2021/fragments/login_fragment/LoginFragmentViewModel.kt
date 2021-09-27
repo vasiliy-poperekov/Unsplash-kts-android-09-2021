@@ -5,19 +5,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class LoginFragmentViewModel : ViewModel() {
-    var emailStringLiveData: String = ""
-    var passwordStringLiveData: String = ""
-    val emailIsCorrectLiveData = MutableLiveData(false)
-    val passwordIsCorrectLiveData = MutableLiveData(false)
+    var emailString: String = ""
+    var passwordString: String = ""
+    var stateFieldsLiveData = MutableLiveData(
+        StateFields(
+            emailIsCorrect = false,
+            passwordIsCorrect = false
+        )
+    )
 
     fun changeEmail(email: String) {
-        emailIsCorrectLiveData.postValue(checkEmail(email))
-        emailStringLiveData = email
+        stateFieldsLiveData.postValue(stateFieldsLiveData.value?.apply {
+            emailIsCorrect = checkEmail(email)
+        })
+        emailString = email
     }
 
     fun changePassword(password: String) {
-        passwordIsCorrectLiveData.postValue(checkPassword(password))
-        passwordStringLiveData = password
+        stateFieldsLiveData.postValue(stateFieldsLiveData.value?.apply {
+            passwordIsCorrect = checkPassword(password)
+        })
+        passwordString = password
     }
 
     private fun checkEmail(emailString: String): Boolean =
