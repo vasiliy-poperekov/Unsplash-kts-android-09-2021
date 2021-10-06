@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kts_android_09_2021.R
 import com.example.kts_android_09_2021.databinding.FragmentOnBoardingBinding
-import com.example.kts_android_09_2021.fragments.on_boarding_fragments.ScreenItem
+import com.example.kts_android_09_2021.fragments.on_boarding_fragments.screen_fragment.ScreenItem
 import com.google.android.material.tabs.TabLayoutMediator
 
 class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {

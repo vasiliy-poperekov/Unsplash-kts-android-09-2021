@@ -6,6 +6,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_editorial"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/tv_editorial_sorry_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_editorial_sorry_message"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

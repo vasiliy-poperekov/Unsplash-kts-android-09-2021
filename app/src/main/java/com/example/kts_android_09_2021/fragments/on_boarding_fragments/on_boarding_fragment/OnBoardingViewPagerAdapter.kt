@@ -3,7 +3,7 @@ package com.example.kts_android_09_2021.fragments.on_boarding_fragments.on_board
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.kts_android_09_2021.fragments.on_boarding_fragments.screen_fragment.OnBoardingFragmentScreen
-import com.example.kts_android_09_2021.fragments.on_boarding_fragments.ScreenItem
+import com.example.kts_android_09_2021.fragments.on_boarding_fragments.screen_fragment.ScreenItem
 
 class OnBoardingViewPagerAdapter(
     fragment: Fragment,

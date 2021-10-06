@@ -31,5 +31,14 @@
         android:id="@+id/mainFragment"
         android:name="com.example.kts_android_09_2021.fragments.main_fragment.MainFragment"
         android:label="MainFragment"
-        tools:layout="@layout/fragment_main"/>
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.kts_android_09_2021.fragments.profile_fragment.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_user_profile"/>
 </navigation>

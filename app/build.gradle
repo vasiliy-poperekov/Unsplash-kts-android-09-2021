@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id("androidx.navigation.safeargs.kotlin")//for navigation directions
+    id 'kotlin-kapt'
 }
 
 android {
@@ -16,6 +17,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                appAuthRedirectScheme: "my.special.scheme"
+        ]
     }
 
     buildTypes {
@@ -49,15 +54,48 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    implementation 'com.jakewharton.timber:timber:5.0.1'//timber for log
-    implementation 'de.hdodenhof:circleimageview:3.1.0'//circle view
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
 
-    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0'//for recycler delegates
     //LiveData
     def liveDataVersion = '2.3.1'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$liveDataVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$liveDataVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$liveDataVersion"
 
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.0-beta01'//for viewBinding
+    //ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$liveDataVersion"
+    implementation "androidx.fragment:fragment-ktx:1.3.6"
+
+    //Moshi
+    def moshiVersion = '1.12.0'
+    implementation "com.squareup.moshi:moshi:$moshiVersion"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+
+    //Retrofit
+    def retrofitVersion = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+
+    //Interceptor for logging RESTs
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
+
+    //Library for oauth
+    implementation 'net.openid:appauth:0.10.0'
+
+    //For viewBinding
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.0-beta01'
+
+    //Timber for log
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    //Circle view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //For recycler delegates
+    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 }

@@ -10,6 +10,7 @@
         android:id="@+id/iv_item_editorial"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +22,7 @@
         android:layout_height="52dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/ll_activities_with_photo"
+        app:layout_constraintEnd_toStartOf="@id/iv_button_download"
         app:layout_constraintStart_toStartOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -29,7 +30,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/little_margin"
             tools:src="@drawable/default_person" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -42,38 +43,47 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_activities_with_photo"
+    <TextView
+        android:id="@+id/editorial_item_tv_like_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ll_user_info">
+        app:layout_constraintEnd_toEndOf="@id/iv_button_like"
+        app:layout_constraintBottom_toTopOf="@id/iv_button_like"
+        app:layout_constraintStart_toStartOf="@id/iv_button_like"
+        android:textColor="@color/white"
+        android:visibility="invisible"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_button_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/little_margin"
             android:src="@drawable/outline_file_download_24"
-            android:tint="@color/white" />
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
+            app:layout_constraintTop_toTopOf="@id/ll_user_info"
+            app:layout_constraintEnd_toStartOf="@id/iv_button_bookmark"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_button_bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/little_margin"
             android:src="@drawable/outline_bookmark_border_24"
-            android:tint="@color/white" />
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
+            app:layout_constraintTop_toTopOf="@id/ll_user_info"
+            app:layout_constraintEnd_toStartOf="@id/iv_button_like"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_button_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/little_margin"
             android:src="@drawable/ic_baseline_favorite_border_24"
-            android:tint="@color/white" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:tint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
+            app:layout_constraintTop_toTopOf="@id/ll_user_info"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

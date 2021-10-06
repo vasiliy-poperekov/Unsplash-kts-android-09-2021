@@ -13,4 +13,5 @@
     <string name="second_on_boarding_screen_subtitle">Once you find photo you like, click on the bottom to save it to Photos.</string>
     <string name="third_on_boarding_screen_title">Make Something Awesome</string>
     <string name="third_on_boarding_screen_subtitle">Embellish your term paper, nail your next presentation, unleash your creativity remixing photos, find the perfect image for your next blog post.</string>
+    <string name="fragment_editorial_sorry_message">Sorry! We don\'t have any posts for you(</string>
 </resources>

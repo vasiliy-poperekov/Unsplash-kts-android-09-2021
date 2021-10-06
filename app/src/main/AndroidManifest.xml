@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.kts_android_09_2021">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -26,6 +28,14 @@
                     android:scheme="https"
                     android:host="unsplash.com" />
             </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.DEFAULT"/>-->
+<!--                <category android:name="android.intent.category.BROWSABLE"/>-->
+
+<!--                <data android:scheme="my.special.scheme"-->
+<!--                    android:path="/code"/>-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 

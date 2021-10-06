@@ -4,13 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<!-- Way to account info will be changed -->
+    <Button
+        android:id="@+id/main_frag_button_to_user_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="your profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_main_frag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/main_frag_button_to_user_profile"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_main_frag"
