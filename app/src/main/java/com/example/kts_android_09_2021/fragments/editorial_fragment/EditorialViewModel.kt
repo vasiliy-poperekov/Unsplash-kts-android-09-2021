@@ -1,82 +1,143 @@
 package com.example.kts_android_09_2021.fragments.editorial_fragment
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kts_android_09_2021.db.repositories.EditorialRepository
 import com.example.kts_android_09_2021.fragments.editorial_fragment.items.ItemEditorial
 import com.example.kts_android_09_2021.fragments.editorial_fragment.items.ItemLoading
 import com.example.kts_android_09_2021.network.data.NetworkingRepository
+import com.example.kts_android_09_2021.utils.Variables
+import com.example.kts_android_09_2021.utils.logExceptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class EditorialViewModel : ViewModel() {
 
     private var currentJob: Job? = null
 
-    private val savedItemsListMutableLiveData = MutableLiveData<MutableList<Any?>>()
-    private val changingInItemsMutableLiveData = MutableLiveData<List<Int>>()
-    private val limitMutableLiveData = MutableLiveData<Boolean>()
-
     private val networkingRepository = NetworkingRepository()
+    private val editorialRepository = EditorialRepository()
 
-    val changingInItemsLiveData: LiveData<List<Int>>
+    private val savedItemsListMutableState = MutableStateFlow(emptyList<Any?>().toMutableList())
+    private val limitMutableState = MutableStateFlow(false)
+    private val changingInItemsMutableLiveData = MutableLiveData<Int>()
+
+    private val networkConnectionObserver: Flow<Boolean>
+        get() = Variables.isNetworkingConnectionState
+
+    val changingInItemsLiveData: LiveData<Int>
         get() = changingInItemsMutableLiveData
 
-    val savedItemsInfoLiveData: LiveData<MutableList<Any?>>
-        get() = savedItemsListMutableLiveData
+    val savedItemsInfoObserver: Flow<MutableList<Any?>>
+        get() = savedItemsListMutableState
 
-    val limitLiveData: LiveData<Boolean>
-        get() = limitMutableLiveData
+    val limitObserver: Flow<Boolean>
+        get() = limitMutableState
 
     init {
-        getNewItems(1)
+        getNewItems(DEFAULT_PAGE_NUMBER)
     }
 
-    fun likePhoto(itemEditorial: ItemEditorial) {
+    fun likePhoto(oldItemEditorial: ItemEditorial) {
         currentJob?.cancel()
         currentJob = viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
-                networkingRepository.likePhoto(itemEditorial)
-            }.onSuccess {
-                val changedItemIndex = savedItemsInfoLiveData.value?.indexOf(itemEditorial)!!
-                savedItemsInfoLiveData.value?.set(changedItemIndex, it)
-                changingInItemsMutableLiveData.postValue(listOf(changedItemIndex, it.likes))
-            }.onFailure {
-                Timber.e(it)
-            }
+            networkingRepository.likePhoto(oldItemEditorial)
+                .catch { exception ->
+                    logExceptions(exception)
+                }
+                .collect { newItem ->
+                    initChangesForFragment(oldItemEditorial, newItem)
+                    editorialRepository.updateItem(newItem)
+                }
+        }
+    }
+
+    fun unLikePhoto(oldItemEditorial: ItemEditorial) {
+        currentJob?.cancel()
+        currentJob = viewModelScope.launch(Dispatchers.IO) {
+            networkingRepository.unLikePhoto(oldItemEditorial)
+                .catch { exception ->
+                    logExceptions(exception)
+                }
+                .collect { newItem ->
+                    initChangesForFragment(oldItemEditorial, newItem)
+                    editorialRepository.updateItem(newItem)
+                }
         }
     }
 
     fun getNewItems(pageNumber: Int) {
-
-        var newItems = savedItemsListMutableLiveData.value ?: emptyList<Any?>().toMutableList()
-
-        newItems = newItems.toMutableList().apply {
-            if (lastOrNull() is ItemLoading) removeLastOrNull()
-        }
-
-        if (pageNumber > 5) {
-            limitMutableLiveData.postValue(true)
-            savedItemsListMutableLiveData.postValue(newItems)
-            return
-        }
-
         currentJob?.cancel()
         currentJob = viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
-                networkingRepository.getPhotosList(pageNumber)
-            }.onSuccess {
-                savedItemsListMutableLiveData.postValue((newItems + it + ItemLoading()).toMutableList())
-            }.onFailure {
-                Timber.e(it)
-                savedItemsListMutableLiveData.postValue(emptyList<Any?>().toMutableList())
+            var oldItems = savedItemsListMutableState.value
+
+            if (pageNumber == DEFAULT_PAGE_NUMBER) {
+                oldItems = emptyList<Any?>().toMutableList()
             }
 
-            Log.e("Pagination", newItems.size.toString())
+            oldItems = oldItems.toMutableList().apply {
+                if (lastOrNull() is ItemLoading) removeLastOrNull()
+            }
+
+            if (pageNumber > 5) {
+                limitMutableState.emit(true)
+                savedItemsListMutableState.emit(oldItems)
+            } else {
+                networkConnectionObserver.collect { isConnected ->
+                    if (isConnected) {
+                        networkingRepository.getPhotosList(pageNumber)
+                            .catch { exception ->
+                                logExceptions(exception)
+                                savedItemsListMutableState.emit(emptyList<Any?>().toMutableList())
+                            }
+                            .collect { editorialList ->
+                                savedItemsListMutableState.emit((oldItems + editorialList + ItemLoading()).toMutableList())
+                                editorialRepository.addEditorialItemsList((oldItems as List<ItemEditorial?>) + editorialList)
+                            }
+                    } else {
+                        editorialRepository.getEditorialItemsList()
+                            .catch { exception ->
+                                logExceptions(exception)
+                                savedItemsListMutableState.emit(emptyList<Any?>().toMutableList())
+                            }
+                            .collect { itemsEditorialList ->
+                                savedItemsListMutableState.emit(itemsEditorialList.toMutableList())
+                            }
+                    }
+                }
+            }
         }
+    }
+
+    private fun copyItemEditorial(
+        oldItemEditorial: ItemEditorial,
+        newItemEditorial: ItemEditorial
+    ): ItemEditorial {
+        return oldItemEditorial.apply {
+            id = newItemEditorial.id
+            userName = newItemEditorial.userName
+            avatarUrl = newItemEditorial.avatarUrl
+            imageUrl = newItemEditorial.imageUrl
+            likes = newItemEditorial.likes
+            likedByUser = newItemEditorial.likedByUser
+        }
+    }
+
+    private fun initChangesForFragment(
+        oldItemEditorial: ItemEditorial,
+        newItemEditorial: ItemEditorial
+    ) {
+        val changedItemCopy = copyItemEditorial(oldItemEditorial, newItemEditorial)
+        val changedItemIndex = savedItemsListMutableState.value.indexOf(oldItemEditorial)
+        savedItemsListMutableState.value[changedItemIndex] = changedItemCopy
+        changingInItemsMutableLiveData.postValue(changedItemIndex)
+    }
+
+    companion object {
+        const val DEFAULT_PAGE_NUMBER = 1
     }
 }

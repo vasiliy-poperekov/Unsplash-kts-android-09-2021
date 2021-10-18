@@ -8,13 +8,14 @@ import com.example.kts_android_09_2021.fragments.editorial_fragment.view_holders
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
 class EditorialFragmentAdapter(
-    private val likePhoto: (ItemEditorial) -> Unit
+    likePhoto: (ItemEditorial) -> Unit,
+    unLikePhoto: (ItemEditorial) -> Unit
 ) : AsyncListDifferDelegationAdapter<Any>(DiffUtilItemsCallback()) {
 
     init {
         delegatesManager
             .addDelegate(ItemLoadingDelegate())
-            .addDelegate(ItemEditorialDelegate { likePhoto(it) })
+            .addDelegate(ItemEditorialDelegate(likePhoto, unLikePhoto))
     }
 
     override fun onBindViewHolder(
@@ -22,7 +23,7 @@ class EditorialFragmentAdapter(
         position: Int,
         payloads: MutableList<Any?>
     ) {
-        if (payloads.isNotEmpty()) (holder as ItemEditorialViewHolder).setProgress(payloads[0].toString()[1].digitToInt())
+        if (payloads.isNotEmpty()) (holder as ItemEditorialViewHolder).photoWasLiked()
         else super.onBindViewHolder(holder, position, payloads)
     }
 }

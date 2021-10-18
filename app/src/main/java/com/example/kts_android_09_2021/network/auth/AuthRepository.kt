@@ -8,10 +8,10 @@ import com.example.kts_android_09_2021.network.auth.AuthConfig.RESPONSE_TYPE
 import com.example.kts_android_09_2021.network.auth.AuthConfig.SCOPE
 import com.example.kts_android_09_2021.network.auth.AuthConfig.SECRET_KET
 import com.example.kts_android_09_2021.network.auth.AuthConfig.TOKEN_URI
-import com.example.kts_android_09_2021.network.entities.AuthData
 import net.openid.appauth.*
 
 class AuthRepository {
+
     private fun getServiceConfig(): AuthorizationServiceConfiguration =
         AuthorizationServiceConfiguration(
             Uri.parse(AUTH_URI),
@@ -32,14 +32,13 @@ class AuthRepository {
     fun getAccessToken(
         authService: AuthorizationService,
         tokenRequest: TokenRequest,
-        onComplete: () -> Unit,
+        onComplete: (String) -> Unit,
         onError: (AuthorizationException) -> Unit
     ) {
         authService.performTokenRequest(tokenRequest, getClientAuthentication()) { response, ex ->
             if (response != null) {
                 val accessToken = response.accessToken.orEmpty()
-                AuthData.accessToken = accessToken
-                onComplete()
+                onComplete(accessToken)
             } else {
                 onError(ex!!)
             }

@@ -8,7 +8,8 @@ import com.example.kts_android_09_2021.fragments.editorial_fragment.view_holders
 import com.hannesdorfmann.adapterdelegates4.AbsListItemAdapterDelegate
 
 class ItemEditorialDelegate(
-    private val likePhoto: (ItemEditorial) -> Unit
+    private val likePhoto: (ItemEditorial) -> Unit,
+    private val unLikePhoto: (ItemEditorial) -> Unit
 ) :
     AbsListItemAdapterDelegate<ItemEditorial, Any, ItemEditorialViewHolder>() {
     override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean {
@@ -19,8 +20,8 @@ class ItemEditorialDelegate(
         return ItemEditorialViewHolder(
             ItemEditorialBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            )
-        ) { likePhoto(it) }
+            ), likePhoto, unLikePhoto
+        )
     }
 
     override fun onBindViewHolder(

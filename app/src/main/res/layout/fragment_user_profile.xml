@@ -6,6 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_user_frag_connection_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_button_color"
+        android:elevation="2dp"
+        android:text="@string/main_frag_message_no_internet_connection"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
     
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_user_photo"
@@ -24,5 +38,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profile_user_photo"
         android:layout_margin="@dimen/default_margin"/>
+
+    <Button
+        android:id="@+id/bv_profile_fragment_log_out"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/default_margin"
+        android:text="@string/fragment_profile_button_log_out"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

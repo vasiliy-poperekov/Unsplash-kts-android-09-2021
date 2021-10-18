@@ -4,14 +4,20 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kts_android_09_2021.R
 import com.example.kts_android_09_2021.databinding.FragmentLoginBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 
@@ -35,19 +41,33 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            requireActivity().finish()
+        }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
         bindViewModel()
     }
 
     private fun bindViewModel() {
         binding.bvLogin.setOnClickListener { viewModel.openLoginPage() }
         with(viewModel) {
-            loadingLiveData.observe(viewLifecycleOwner, ::updateIsLoading)
-            openAuthLiveData.observe(viewLifecycleOwner, ::openAuthPage)
-            authSuccessLiveData.observe(viewLifecycleOwner, {
-                if (it) findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
-            })
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    launch {
+                        tokenObserver.collect {
+                            if (!it.isNullOrEmpty()) {
+                                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
+                            }
+                        }
+                    }
+                    launch { loadingObserver.collect(::updateIsLoading) }
+                    launch { openAuthObserver.collect { if (it != null) openAuthPage(it) } }
+                }
+            }
         }
     }
 
@@ -60,5 +80,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun openAuthPage(intent: Intent) {
         resultLauncher.launch(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        onBackPressedCallback.remove()
     }
 }

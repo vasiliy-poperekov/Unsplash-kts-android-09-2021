@@ -19,4 +19,9 @@ interface UnsplashApi {
     suspend fun likePhoto(
         @Path("id") id: String
     ): ResponsedBody
+
+    @DELETE("photos/{id}/like")
+    suspend fun unLikePhoto(
+        @Path("id") id: String
+    ): ResponsedBody
 }

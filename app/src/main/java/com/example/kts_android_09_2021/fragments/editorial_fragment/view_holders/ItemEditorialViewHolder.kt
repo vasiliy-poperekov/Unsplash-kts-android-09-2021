@@ -10,21 +10,18 @@ import kotlinx.coroutines.*
 
 class ItemEditorialViewHolder(
     private val binding: ItemEditorialBinding,
-    private val likePhoto: (ItemEditorial) -> Unit
+    private val likePhoto: (ItemEditorial) -> Unit,
+    private val unLikePhoto: (ItemEditorial) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
+    private var currentJob: Job? = null
+    private lateinit var currentItem: ItemEditorial
 
     fun bind(item: ItemEditorial) {
-        binding.tvUserName.text = item.userName
+        currentItem = item
 
-        if (item.likedByUser) {
-            binding.ivButtonLike.setImageResource(R.drawable.ic_baseline_favorite_24)
-            binding.ivButtonLike.setOnClickListener(null)
-        } else {
-            binding.ivButtonLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            binding.ivButtonLike.setOnClickListener {
-                likePhoto(item)
-            }
-        }
+        setLikeButtonActions()
+
+        binding.tvUserName.text = currentItem.userName
 
         Glide.with(binding.root)
             .load(item.imageUrl)
@@ -35,16 +32,40 @@ class ItemEditorialViewHolder(
             .into(binding.civAvatar)
     }
 
-    fun setProgress(likesNumber: Int) {
-        binding.ivButtonLike.setImageResource(R.drawable.ic_baseline_favorite_24)
-        binding.ivButtonLike.setOnClickListener(null)
-        binding.editorialItemTvLikeCounter.text = likesNumber.toString()
-        GlobalScope.launch {
-            binding.editorialItemTvLikeCounter.visibility = View.VISIBLE
-            delay(3000)
-            binding.editorialItemTvLikeCounter.visibility = View.INVISIBLE
-            cancel()
+    fun photoWasLiked() {
+        if (!currentItem.likedByUser) {
+            currentItem.likedByUser = false
+            currentItem.likes = currentItem.likes - 1
+            setLikeButtonActions()
+        } else {
+            currentItem.likedByUser = true
+            currentItem.likes = currentItem.likes + 1
+            setLikeButtonActions()
+            binding.editorialItemTvLikeCounter.text = currentItem.likes.toString()
+            currentJob = GlobalScope.launch(Dispatchers.Main) {
+                binding.editorialItemTvLikeCounter.visibility = View.VISIBLE
+                delay(3000)
+                binding.editorialItemTvLikeCounter.visibility = View.INVISIBLE
+            }
         }
     }
 
+    private fun setLikeButtonActions() {
+        with(binding.ivButtonLike) {
+            if (currentItem.likedByUser) {
+                setImageResource(R.drawable.ic_baseline_favorite_24)
+                setOnClickListener {
+                    binding.editorialItemTvLikeCounter.visibility = View.INVISIBLE
+                    currentJob?.cancel()
+                    unLikePhoto(currentItem)
+                }
+            } else {
+                setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                setOnClickListener {
+                    currentJob?.cancel()
+                    likePhoto(currentItem)
+                }
+            }
+        }
+    }
 }

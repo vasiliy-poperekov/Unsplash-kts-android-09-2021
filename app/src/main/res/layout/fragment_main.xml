@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!-- Way to account info will be changed -->
+    <!-- Way to account info will be changed -->
     <Button
         android:id="@+id/main_frag_button_to_user_profile"
         android:layout_width="0dp"
@@ -12,7 +12,7 @@
         android:text="your profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_main_frag"
@@ -20,7 +20,21 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_frag_button_to_user_profile"/>
+        app:layout_constraintTop_toBottomOf="@id/main_frag_button_to_user_profile" />
+
+    <TextView
+        android:id="@+id/tv_main_frag_connection_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_button_color"
+        android:elevation="2dp"
+        android:text="@string/main_frag_message_no_internet_connection"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tl_main_frag" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_main_frag"

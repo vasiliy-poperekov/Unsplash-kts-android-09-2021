@@ -15,4 +15,7 @@
     <string name="third_on_boarding_screen_title">Сделай что-нибудь крутое</string>
     <string name="third_on_boarding_screen_subtitle">Украшайте свою курсовую работу, создайте новую презентацию, дайте волю своему творчеству, создавая ремиксы фотографий, найдите идеальное изображение для своего следующего сообщения в блоге.</string>
     <string name="fragment_editorial_sorry_message">Извините, у нас закончились посты для вас(</string>
+    <string name="main_frag_message_no_internet_connection">Нет соединения с интернетом! Вы видите сохранённый данные</string>
+    <string name="fragment_profile_button_log_out">Выйти</string>
+    <string name="limit_was_reached">Лимит превышен</string>
 </resources>

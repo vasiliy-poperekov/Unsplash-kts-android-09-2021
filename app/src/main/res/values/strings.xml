@@ -14,4 +14,7 @@
     <string name="third_on_boarding_screen_title">Make Something Awesome</string>
     <string name="third_on_boarding_screen_subtitle">Embellish your term paper, nail your next presentation, unleash your creativity remixing photos, find the perfect image for your next blog post.</string>
     <string name="fragment_editorial_sorry_message">Sorry! We don\'t have any posts for you(</string>
+    <string name="main_frag_message_no_internet_connection">No internet connection! You see saved data.</string>
+    <string name="fragment_profile_button_log_out">log out</string>
+    <string name="limit_was_reached">Limit was reached</string>
 </resources>

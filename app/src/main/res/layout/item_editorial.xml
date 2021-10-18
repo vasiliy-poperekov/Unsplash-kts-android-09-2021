@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="320dp"
-    tools:background="@color/grey_button_color">
+    android:background="@color/grey_button_color">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_item_editorial"
@@ -31,7 +31,7 @@
             android:layout_height="36dp"
             android:layout_gravity="center"
             android:layout_margin="@dimen/little_margin"
-            tools:src="@drawable/default_person" />
+            android:src="@drawable/default_person" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_user_name"
