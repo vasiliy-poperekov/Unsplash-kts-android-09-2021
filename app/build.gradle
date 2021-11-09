@@ -109,4 +109,12 @@ dependencies {
 
     //RefreshLayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //Koin DI
+//    implementation "org.koin:koin-androidx-viewmodel:2.2.3"
+//    implementation "org.koin:koin-android:2.2.3"
+    // Koin AndroidX Scope features
+    implementation "io.insert-koin:koin-androidx-scope:2.2.3"
+// Koin AndroidX ViewModel features
+    implementation "io.insert-koin:koin-androidx-viewmodel:2.2.3"
 }

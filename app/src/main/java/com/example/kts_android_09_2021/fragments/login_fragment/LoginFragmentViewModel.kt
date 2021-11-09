@@ -1,28 +1,34 @@
 package com.example.kts_android_09_2021.fragments.login_fragment
 
-import android.app.Application
 import android.content.Intent
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kts_android_09_2021.MainApplication
+import com.example.kts_android_09_2021.db.repositories_impl.UserRepositoryImpl
+import com.example.kts_android_09_2021.key_value.DatastoreRepository
 import com.example.kts_android_09_2021.network.auth.AuthRepository
+import com.example.kts_android_09_2021.network.data.NetworkingRepository
+import com.example.kts_android_09_2021.utils.NetworkingChecker
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.TokenRequest
 
-class LoginFragmentViewModel(application: Application) : AndroidViewModel(application) {
+class LoginFragmentViewModel(
+    private val authService: AuthorizationService,
+    private val datastoreRepository: DatastoreRepository,
+    private val networkingChecker: NetworkingChecker,
+    private val userRepository: UserRepositoryImpl,
+    private val networkingRepository: NetworkingRepository
+) : ViewModel() {
 
     private val authRepository = AuthRepository()
-    private val authService = AuthorizationService(getApplication())
-    private val datastoreRepository = (getApplication() as MainApplication).datastoreRepository
 
     private val openAuthMutableState = MutableStateFlow<Intent?>(null)
     private val loadingMutableState = MutableStateFlow(false)
+    private val everythingIsReadyMutStateFlow = MutableStateFlow(false)
+    private val onAuthCodeFailedMutStateFlow = MutableStateFlow<AuthorizationException?>(null)
 
     val openAuthObserver: Flow<Intent?>
         get() = openAuthMutableState
@@ -30,8 +36,31 @@ class LoginFragmentViewModel(application: Application) : AndroidViewModel(applic
     val loadingObserver: Flow<Boolean>
         get() = loadingMutableState
 
-    val tokenObserver: Flow<String?>
-        get() = datastoreRepository.observeTokenChanging()
+    val everythingIsReadyObserver: Flow<Boolean>
+        get() = everythingIsReadyMutStateFlow
+
+    val onAuthCodeFailedObserver: Flow<AuthorizationException?>
+        get() = onAuthCodeFailedMutStateFlow
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            datastoreRepository.observeTokenChanging().collect { token ->
+                if (!token.isNullOrEmpty()) {
+                    networkingChecker.observeNetworkChange().collect { isConnected ->
+                        if (isConnected) {
+                            networkingRepository.getInfoAboutAuthorizedUser()
+                                .collect { newUser ->
+                                    userRepository.addAuthorizedUser(newUser)
+                                    everythingIsReadyMutStateFlow.emit(true)
+                                }
+                        } else {
+                            everythingIsReadyMutStateFlow.emit(true)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun openLoginPage() {
         val openAuthIntent = authService.getAuthorizationRequestIntent(
@@ -47,23 +76,19 @@ class LoginFragmentViewModel(application: Application) : AndroidViewModel(applic
         authRepository.getAccessToken(
             authService = authService,
             tokenRequest = tokenRequest,
-            onComplete = {
+            onComplete = { token ->
                 viewModelScope.launch(Dispatchers.IO) {
                     loadingMutableState.emit(true)
-                    datastoreRepository.saveToken(it)
+                    datastoreRepository.saveToken(token)
                 }
             },
-            onError = {
+            onError = { exception ->
                 viewModelScope.launch(Dispatchers.IO) {
                     loadingMutableState.emit(false)
+                    onAuthCodeFailedMutStateFlow.emit(exception)
                 }
-                onAuthCodeFailed(it)
             }
         )
-    }
-
-    fun onAuthCodeFailed(exception: AuthorizationException) {
-        Toast.makeText(getApplication(), exception.toJsonString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCleared() {

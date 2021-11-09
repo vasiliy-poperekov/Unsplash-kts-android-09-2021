@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--This part will be changed. Now it's just for demonstration-->
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_user_frag_connection_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/grey_button_color"
+        android:background="@color/grey_color_non_active_elements"
         android:elevation="2dp"
         android:text="@string/main_frag_message_no_internet_connection"
         android:textAlignment="center"
@@ -19,34 +17,100 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    
+        app:layout_constraintTop_toTopOf="parent" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_user_photo"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginVertical="@dimen/default_margin"
+        app:layout_constraintBottom_toTopOf="@id/ll_profile_container_full_user_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/default_margin"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_profile_container_full_user_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/tv_profile_status"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_user_photo">
+
+        <TextView
+            android:id="@+id/tv_profile_user_full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_big"
+            tools:text="Gordon Freeman" />
+
+        <TextView
+            android:id="@+id/tv_profile_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:textColor="@color/grey_color_non_active_elements"
+            android:textSize="@dimen/text_size_little" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/profile_user_info"
+        android:id="@+id/tv_profile_status"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_average"
+        app:layout_constraintBottom_toBottomOf="@id/tv_profile_status"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_user_photo"
-        android:layout_margin="@dimen/default_margin"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_profile_container_full_user_name"
+        tools:text="Something about user, his status" />
 
-    <Button
-        android:id="@+id/bv_profile_fragment_log_out"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_profile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/default_margin"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_status" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_profile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tl_profile" />
+
+    <ImageView
+        android:id="@+id/profile_fragment_iv_log_out"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="@dimen/default_margin"
-        android:text="@string/fragment_profile_button_log_out"/>
+        android:background="@drawable/ic_baseline_exit_to_app_24"
+        android:backgroundTint="@color/black"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/bv_profile_fragment_log_out"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="@dimen/default_margin"-->
+<!--        android:text="@string/fragment_profile_button_log_out"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

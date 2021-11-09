@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="320dp"
-    android:background="@color/grey_button_color">
+    android:layout_marginBottom="@dimen/item_bottom_margin"
+    android:background="@color/grey_color_non_active_elements">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_item_editorial"
@@ -47,43 +48,43 @@
         android:id="@+id/editorial_item_tv_like_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/iv_button_like"
-        app:layout_constraintBottom_toTopOf="@id/iv_button_like"
-        app:layout_constraintStart_toStartOf="@id/iv_button_like"
         android:textColor="@color/white"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/iv_button_like"
+        app:layout_constraintEnd_toEndOf="@id/iv_button_like"
+        app:layout_constraintStart_toStartOf="@id/iv_button_like" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_button_download"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/little_margin"
-            android:src="@drawable/outline_file_download_24"
-            android:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
-            app:layout_constraintTop_toTopOf="@id/ll_user_info"
-            app:layout_constraintEnd_toStartOf="@id/iv_button_bookmark"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_button_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/little_margin"
+        android:src="@drawable/outline_file_download_24"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
+        app:layout_constraintEnd_toStartOf="@id/iv_button_bookmark"
+        app:layout_constraintTop_toTopOf="@id/ll_user_info" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_button_bookmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/little_margin"
-            android:src="@drawable/outline_bookmark_border_24"
-            android:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
-            app:layout_constraintTop_toTopOf="@id/ll_user_info"
-            app:layout_constraintEnd_toStartOf="@id/iv_button_like"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_button_bookmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/little_margin"
+        android:src="@drawable/outline_bookmark_border_24"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
+        app:layout_constraintEnd_toStartOf="@id/iv_button_like"
+        app:layout_constraintTop_toTopOf="@id/ll_user_info" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_button_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/little_margin"
-            android:src="@drawable/ic_baseline_favorite_border_24"
-            android:tint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
-            app:layout_constraintTop_toTopOf="@id/ll_user_info"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_button_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/little_margin"
+        android:src="@drawable/ic_baseline_favorite_border_24"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/ll_user_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ll_user_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

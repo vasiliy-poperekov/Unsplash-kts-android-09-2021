@@ -15,13 +15,11 @@ data class EditorialEntity(
     @ColumnInfo(name = EditorialContract.Columns.USERNAME)
     val userName: String,
 
-    @ColumnInfo(
-        name = EditorialContract.Columns.AVATAR_URL
-    ) val avatarUrl: String,
+    @ColumnInfo(name = EditorialContract.Columns.AVATAR_URL)
+    val avatarUrl: String,
 
-    @ColumnInfo(
-        name = EditorialContract.Columns.IMAGE_URL
-    ) val imageUrl: String,
+    @ColumnInfo(name = EditorialContract.Columns.IMAGE_URL)
+    val imageUrl: String,
 
     @ColumnInfo(name = EditorialContract.Columns.LIKES)
     val likes: Int,

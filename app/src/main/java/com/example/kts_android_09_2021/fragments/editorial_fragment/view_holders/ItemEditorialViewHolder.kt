@@ -13,7 +13,6 @@ class ItemEditorialViewHolder(
     private val likePhoto: (ItemEditorial) -> Unit,
     private val unLikePhoto: (ItemEditorial) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
-    private var currentJob: Job? = null
     private lateinit var currentItem: ItemEditorial
 
     fun bind(item: ItemEditorial) {
@@ -42,7 +41,7 @@ class ItemEditorialViewHolder(
             currentItem.likes = currentItem.likes + 1
             setLikeButtonActions()
             binding.editorialItemTvLikeCounter.text = currentItem.likes.toString()
-            currentJob = GlobalScope.launch(Dispatchers.Main) {
+            CoroutineScope(Dispatchers.Main).launch {
                 binding.editorialItemTvLikeCounter.visibility = View.VISIBLE
                 delay(3000)
                 binding.editorialItemTvLikeCounter.visibility = View.INVISIBLE
@@ -56,13 +55,11 @@ class ItemEditorialViewHolder(
                 setImageResource(R.drawable.ic_baseline_favorite_24)
                 setOnClickListener {
                     binding.editorialItemTvLikeCounter.visibility = View.INVISIBLE
-                    currentJob?.cancel()
                     unLikePhoto(currentItem)
                 }
             } else {
                 setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 setOnClickListener {
-                    currentJob?.cancel()
                     likePhoto(currentItem)
                 }
             }

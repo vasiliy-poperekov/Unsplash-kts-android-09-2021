@@ -3,46 +3,67 @@ package com.example.kts_android_09_2021.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import android.os.Build
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.*
 
 class NetworkingChecker(
     val context: Context
 ) {
-    private var currentJob: Job? = null
+    private var changesJob: Job? = null
 
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            currentJob?.cancel()
-            currentJob = GlobalScope.launch(Dispatchers.IO) {
-                Variables.isNetworkingConnectionState.emit(true)
-            }
-        }
-
-        override fun onLost(network: Network) {
-            currentJob?.cancel()
-            currentJob = GlobalScope.launch(Dispatchers.IO) {
-                Variables.isNetworkingConnectionState.emit(false)
-            }
-        }
-    }
-
-    fun startNetworkCallback() {
+    fun observeNetworkChange(): SharedFlow<Boolean> = callbackFlow {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
+        if (!isInternetAvailable(cm)) {
+            send(false)
+        }
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+
+            override fun onAvailable(network: Network) {
+                changesJob?.cancel()
+                changesJob = CoroutineScope(Dispatchers.IO).launch {
+                    send(true)
+                }
+            }
+
+            override fun onLost(network: Network) {
+                changesJob?.cancel()
+                changesJob = CoroutineScope(Dispatchers.IO).launch {
+                    send(false)
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cm.registerDefaultNetworkCallback(networkCallback)
         } else {
             cm.registerNetworkCallback(builder.build(), networkCallback)
         }
-    }
 
-    fun stopNetworkCallback() {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        cm.unregisterNetworkCallback(ConnectivityManager.NetworkCallback())
+        awaitClose {
+            cm.unregisterNetworkCallback(networkCallback)
+        }
+    }
+        .shareIn(CoroutineScope(Dispatchers.IO), SharingStarted.Lazily, 1)
+
+
+    private fun isInternetAvailable(cm: ConnectivityManager): Boolean {
+        var result = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = cm.activeNetwork ?: return false
+            val actNw = cm.getNetworkCapabilities(networkCapabilities) ?: return false
+            result = when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        }
+
+        return result
     }
 }

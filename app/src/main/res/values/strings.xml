@@ -15,6 +15,16 @@
     <string name="third_on_boarding_screen_subtitle">Embellish your term paper, nail your next presentation, unleash your creativity remixing photos, find the perfect image for your next blog post.</string>
     <string name="fragment_editorial_sorry_message">Sorry! We don\'t have any posts for you(</string>
     <string name="main_frag_message_no_internet_connection">No internet connection! You see saved data.</string>
+    <string name="default_bio">Download free, beautiful high-quality photos curated by </string>
     <string name="fragment_profile_button_log_out">log out</string>
     <string name="limit_was_reached">Limit was reached</string>
+    <string name="mail_symbol_for_username">\@</string>
+    <string name="profile_table_layout_photos">Photos</string>
+    <string name="profile_table_layout_likes">Likes</string>
+    <string name="profile_table_layout_collections">Collections</string>
+    <string name="profile_frag_like_photos_list_empty">You didn\'t like photos</string>
+    <string name="wrong_text_message">Something go wrong</string>
+    <string name="you_didnt_post_photos">You didn\'t post any photos</string>
+    <string name="main_fragment_editorial_label">Editorial</string>
+    <string name="profile_frag_bv_your_profile">your profile</string>
 </resources>

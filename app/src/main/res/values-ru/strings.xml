@@ -18,4 +18,13 @@
     <string name="main_frag_message_no_internet_connection">Нет соединения с интернетом! Вы видите сохранённый данные</string>
     <string name="fragment_profile_button_log_out">Выйти</string>
     <string name="limit_was_reached">Лимит превышен</string>
+    <string name="default_bio">Бесплатно загрузите красивые высококачественные фотографии </string>
+    <string name="mail_symbol_for_username">\@</string>
+    <string name="profile_table_layout_photos">Фото</string>
+    <string name="profile_table_layout_likes">Лайки</string>
+    <string name="profile_table_layout_collections">Коллекции</string>
+    <string name="profile_frag_like_photos_list_empty">У вас нет понравившихся фото</string>
+    <string name="wrong_text_message">Что-то пошло не так</string>
+    <string name="you_didnt_post_photos">У вас нет выложенных фото</string>
+    <string name="main_fragment_editorial_label">Editorial</string>
 </resources>

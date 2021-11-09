@@ -44,7 +44,7 @@ class DatastoreRepository(
 
     companion object {
         private const val DATASTORE_NAME = "datastore"
-        private val KEY_TOKEN = stringPreferencesKey("KEY_STRING")
+        private val KEY_TOKEN = stringPreferencesKey("KEY_TOKEN")
         private val KEY_IS_NOT_FIRST_ENTER = booleanPreferencesKey("KEY_BOOLEAN")
     }
 }

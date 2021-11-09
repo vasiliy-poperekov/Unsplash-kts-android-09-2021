@@ -4,11 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,11 +20,12 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val binding: FragmentLoginBinding by viewBinding(FragmentLoginBinding::bind)
-    private val viewModel: LoginFragmentViewModel by viewModels()
+    private val viewModel: LoginFragmentViewModel by viewModel()
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == Activity.RESULT_OK) {
@@ -36,7 +37,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     tokenRequest != null && exception == null -> viewModel.onAuthCodeReceived(
                         tokenRequest
                     )
-                    exception != null -> viewModel.onAuthCodeFailed(exception)
+                    exception != null -> onAuthCodeFailed(exception)
                 }
             }
         }
@@ -58,14 +59,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     launch {
-                        tokenObserver.collect {
-                            if (!it.isNullOrEmpty()) {
+                        everythingIsReadyObserver.collect { everythingIsReady ->
+                            if (everythingIsReady)
                                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
-                            }
                         }
                     }
                     launch { loadingObserver.collect(::updateIsLoading) }
                     launch { openAuthObserver.collect { if (it != null) openAuthPage(it) } }
+                    launch { onAuthCodeFailedObserver.collect { if (it != null) onAuthCodeFailed(it) } }
                 }
             }
         }
@@ -80,6 +81,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun openAuthPage(intent: Intent) {
         resultLauncher.launch(intent)
+    }
+
+    private fun onAuthCodeFailed(exception: AuthorizationException) {
+        Toast.makeText(requireContext(), exception.toJsonString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

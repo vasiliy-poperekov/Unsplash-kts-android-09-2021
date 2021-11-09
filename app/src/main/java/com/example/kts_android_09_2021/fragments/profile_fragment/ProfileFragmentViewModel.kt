@@ -1,37 +1,36 @@
 package com.example.kts_android_09_2021.fragments.profile_fragment
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.example.kts_android_09_2021.MainApplication
-import com.example.kts_android_09_2021.db.repositories.EditorialRepository
+import com.example.kts_android_09_2021.db.repositories_impl.*
+import com.example.kts_android_09_2021.key_value.DatastoreRepository
 import com.example.kts_android_09_2021.network.data.NetworkingRepository
-import com.example.kts_android_09_2021.network.entities.AuthorizedUser
-import com.example.kts_android_09_2021.utils.Variables
+import com.example.kts_android_09_2021.network.entities.profile.AuthorizedUser
+import com.example.kts_android_09_2021.utils.NetworkingChecker
 import com.example.kts_android_09_2021.utils.logExceptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ProfileFragmentViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-    private var currentJob: Job? = null
-
-    private val networkingRepository = NetworkingRepository()
-    private val datastoreRepository = (getApplication<MainApplication>().datastoreRepository)
-    private val editorialRepository = EditorialRepository()
+    private val networkingRepository: NetworkingRepository,
+    private val datastoreRepository: DatastoreRepository,
+    private val editorialRepository: EditorialRepositoryImpl,
+    private val userRepository: UserRepositoryImpl,
+    private val likedPhotosRepository: LikedPhotosRepositoryImpl,
+    private val userPhotosRepository: LikedPhotosRepositoryImpl,
+    networkingChecker: NetworkingChecker
+) : ViewModel() {
+    private var mainJob: Job? = null
+    private var loadJob: Job? = null
 
     private val currentUserMutableState = MutableStateFlow<AuthorizedUser?>(null)
 
     val currentUserObserver: Flow<AuthorizedUser?>
         get() = currentUserMutableState
 
-    val connectionObserver: Flow<Boolean>
-        get() = Variables.isNetworkingConnectionState
+    val connectionObserver: Flow<Boolean> =
+        networkingChecker.observeNetworkChange()
 
     val tokenObserver: Flow<String?>
         get() = datastoreRepository.observeTokenChanging()
@@ -41,26 +40,36 @@ class ProfileFragmentViewModel(
     }
 
     private fun getAuthorizedUser() {
-        currentJob?.cancel()
-        currentJob = viewModelScope.launch(Dispatchers.IO) {
+        mainJob?.cancel()
+        mainJob = viewModelScope.launch(Dispatchers.IO) {
             connectionObserver
-                .catch { logExceptions(it) }
                 .collect { isConnected ->
+                    loadJob?.cancel()
                     if (isConnected) {
-                        networkingRepository.getInfoAboutAuthorizedUser()
-                            .catch { logExceptions(it) }
-                            .collect { authorizedUser ->
-                                currentUserMutableState.emit(authorizedUser)
-                            }
+                        loadJob = launch {
+                            networkingRepository.getInfoAboutAuthorizedUser()
+                                .catch { logExceptions(it) }
+                                .collect { authorizedUser ->
+                                    currentUserMutableState.emit(authorizedUser)
+                                    userRepository.addAuthorizedUser(authorizedUser)
+                                }
+                        }
+                    } else {
+                        loadJob = launch {
+                            currentUserMutableState.emit(userRepository.getAuthorizedUser())
+                        }
                     }
                 }
         }
     }
 
     fun logOut() {
-        currentJob?.cancel()
-        currentJob = viewModelScope.launch(Dispatchers.IO) {
+        mainJob?.cancel()
+        mainJob = viewModelScope.launch(Dispatchers.IO) {
             editorialRepository.deleteAllItems()
+            userRepository.deleteAuthorizedUser()
+            likedPhotosRepository.deleteAllItems()
+            userPhotosRepository.deleteAllItems()
             datastoreRepository.saveToken("")
         }
     }

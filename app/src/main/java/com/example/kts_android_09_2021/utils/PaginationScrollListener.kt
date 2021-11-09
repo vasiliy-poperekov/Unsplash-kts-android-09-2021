@@ -5,14 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class PaginationScrollListener(
     private val layoutManager: LinearLayoutManager,
-    private val pasteNewItems: (Int) -> Unit,
+    private val pasteNewItems: (() -> Unit) -> Unit,
     private val visibilityThreshold: Int = 0
 ) : RecyclerView.OnScrollListener() {
-    var isLoading = true
-    var isLastPage = false
-    private var pageCounter = 1
+    private var isLoading = true
 
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) =
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         with(layoutManager) {
             if (dy <= 0) return@with
 
@@ -20,9 +18,12 @@ class PaginationScrollListener(
             val visibleItems = childCount
             val itemsTotal = itemCount
 
-            if (!isLastPage && isLoading && visibleItems + scrolledOffItems + visibilityThreshold >= itemsTotal) {
-                pasteNewItems.invoke(++pageCounter)
+            if (isLoading && visibleItems + scrolledOffItems + visibilityThreshold >= itemsTotal) {
+                pasteNewItems { isLoading = true }
                 isLoading = false
+
             }
         }
+
+    }
 }

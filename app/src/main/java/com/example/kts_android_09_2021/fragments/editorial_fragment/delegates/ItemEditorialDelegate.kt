@@ -29,6 +29,7 @@ class ItemEditorialDelegate(
         holder: ItemEditorialViewHolder,
         payloads: MutableList<Any>
     ) {
-        holder.bind(item)
+        if (payloads.isNotEmpty()) holder.photoWasLiked()
+        else holder.bind(item)
     }
 }

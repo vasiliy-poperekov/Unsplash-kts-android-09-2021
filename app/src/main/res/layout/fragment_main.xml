@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Way to account info will be changed -->
     <Button
         android:id="@+id/main_frag_button_to_user_profile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="your profile"
+        android:layout_marginHorizontal="@dimen/little_margin"
+        android:text="@string/profile_frag_bv_your_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +26,7 @@
         android:id="@+id/tv_main_frag_connection_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/grey_button_color"
+        android:background="@color/grey_color_non_active_elements"
         android:elevation="2dp"
         android:text="@string/main_frag_message_no_internet_connection"
         android:textAlignment="center"
