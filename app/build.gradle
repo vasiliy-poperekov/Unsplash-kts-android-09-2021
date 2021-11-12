@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id("androidx.navigation.safeargs.kotlin")//for navigation directions
+    id 'kotlin-kapt'
 }
 
 android {
@@ -15,6 +17,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                appAuthRedirectScheme: "my.special.scheme"
+        ]
     }
 
     buildTypes {
@@ -36,13 +42,77 @@ android {
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+
+    //LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+
+    //ViewModel
+    def viewModelVersion = '2.4.0-alpha03'
+    implementation "androidx.fragment:fragment-ktx:1.3.6"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$viewModelVersion"
+
+    //Moshi
+    def moshiVersion = '1.12.0'
+    implementation "com.squareup.moshi:moshi:$moshiVersion"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+
+    //Retrofit
+    def retrofitVersion = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+
+    //Room
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    //Interceptor for logging RESTs
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
+
+    //Library for oauth
+    implementation 'net.openid:appauth:0.10.0'
+
+    //For viewBinding
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.0-beta01'
+
+    //Timber for log
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    //Circle view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //For recycler delegates
+    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    //DatastorePreferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //RefreshLayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //Koin DI
+    implementation "io.insert-koin:koin-androidx-scope:2.2.3"
+    implementation "io.insert-koin:koin-androidx-viewmodel:2.2.3"
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }

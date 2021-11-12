@@ -1,5 +1,30 @@
 <resources>
     <string name="app_name">kts-android-09-2021</string>
-    <string name="next">Next</string>
+    <string name="on_boarding_next">Next</string>
     <string name="welcome_to_our_app">Welcome to our app</string>
+    <string name="login_email_placeholder">Email</string>
+    <string name="login_password_placeholder">Password</string>
+    <string name="login_button_login">log in</string>
+    <string name="login_enter_correct_email">Enter correct email</string>
+    <string name="login_need_more_than_8_symbols">Need more than 8 symbols</string>
+    <string name="first_on_boarding_screen_title">Beautiful, free photos</string>
+    <string name="first_on_boarding_screen_subtitle">Discover over 400,000 free high-res photos that you can save and use for anything.</string>
+    <string name="second_on_boarding_screen_title">Press button to download</string>
+    <string name="second_on_boarding_screen_subtitle">Once you find photo you like, click on the bottom to save it to Photos.</string>
+    <string name="third_on_boarding_screen_title">Make Something Awesome</string>
+    <string name="third_on_boarding_screen_subtitle">Embellish your term paper, nail your next presentation, unleash your creativity remixing photos, find the perfect image for your next blog post.</string>
+    <string name="fragment_editorial_sorry_message">Sorry! We don\'t have any posts for you(</string>
+    <string name="main_frag_message_no_internet_connection">No internet connection! You see saved data.</string>
+    <string name="default_bio">Download free, beautiful high-quality photos curated by </string>
+    <string name="fragment_profile_button_log_out">log out</string>
+    <string name="limit_was_reached">Limit was reached</string>
+    <string name="mail_symbol_for_username">\@</string>
+    <string name="profile_table_layout_photos">Photos</string>
+    <string name="profile_table_layout_likes">Likes</string>
+    <string name="profile_table_layout_collections">Collections</string>
+    <string name="profile_frag_like_photos_list_empty">You didn\'t like photos</string>
+    <string name="wrong_text_message">Something go wrong</string>
+    <string name="you_didnt_post_photos">You didn\'t post any photos</string>
+    <string name="main_fragment_editorial_label">Editorial</string>
+    <string name="profile_frag_bv_your_profile">your profile</string>
 </resources>
