@@ -27,4 +27,5 @@
     <string name="wrong_text_message">Что-то пошло не так</string>
     <string name="you_didnt_post_photos">У вас нет выложенных фото</string>
     <string name="main_fragment_editorial_label">Editorial</string>
+    <string name="profile_frag_bv_your_profile">Ваш профиль</string>
 </resources>

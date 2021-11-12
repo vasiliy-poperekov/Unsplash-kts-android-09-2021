@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.example.kts_android_09_2021.fragments.on_boarding_fragments.on_boarding_fragment.OnBoardingFragment"
+        android:name="com.example.kts_android_09_2021.presentation.fragments.on_boarding_fragments.on_boarding_fragment.OnBoardingFragment"
         android:label="OnBoardingFragment"
         tools:layout="@layout/fragment_on_boarding">
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.kts_android_09_2021.fragments.login_fragment.LoginFragment"
+        android:name="com.example.kts_android_09_2021.presentation.fragments.login_fragment.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.kts_android_09_2021.fragments.main_fragment.MainFragment"
+        android:name="com.example.kts_android_09_2021.presentation.fragments.main_fragment.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main">
         <action
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.kts_android_09_2021.fragments.profile_fragment.ProfileFragment"
+        android:name="com.example.kts_android_09_2021.presentation.fragments.profile_fragment.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_user_profile">
         <action
